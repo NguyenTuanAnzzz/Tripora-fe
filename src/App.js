@@ -1,9 +1,13 @@
 import React from 'react';
 import AppRoutes from './routes';
-
+import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
-    <AppRoutes />
+    <React.StrictMode>
+        <AuthProvider>
+            <AppRoutes/>
+        </AuthProvider>
+    </React.StrictMode>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import ErrorMessage from '../components/ErrorMessage';
 import ButtonField from '../components/ButtonField';
@@ -92,12 +92,39 @@ const OtpVerification = () => {
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async(e) => {
     setOtp(['', '', '', '', '', '']);
     setTimeLeft(5 * 60);
     setIsExpired(false);
     inputRefs.current[0].focus();
     // Simulate API call for resend here
+    e.preventDefault();
+     
+
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/auth/resend-otp",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({email}),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setMessage(data.message || "Gui lai otp that bai");
+                return;
+            }
+
+            
+
+        } catch (error) {
+            setMessage("Không thể kết nối đến server");
+        }
   };
 
   const handleSubmit = async (e) => {
@@ -148,7 +175,6 @@ const OtpVerification = () => {
 
   const isComplete = otp.every((digit) => digit !== '');
 
-  
 
   return (
     <AuthLayout
@@ -202,6 +228,12 @@ const OtpVerification = () => {
                     message={message}
                 />}
 
+        <div className="mt-4 text-center text-body">
+          <span className="text-stone">Đã có tài khoản? </span>
+          <Link to="/login" className="text-ember-orange-link font-medium hover:underline ml-1">
+            Đăng nhập
+          </Link>
+        </div>
       </form>
     </AuthLayout>
   );

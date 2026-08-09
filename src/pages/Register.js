@@ -58,6 +58,8 @@ const Register = () => {
             setMessage("Không thể kết nối đến server");
         }
     };
+
+    
     return (
         <AuthLayout
             title="Tạo tài khoản"

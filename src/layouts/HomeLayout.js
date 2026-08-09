@@ -12,7 +12,7 @@ const HomeLayout = ({ children }) => {
                         <img 
                             src="/logo.svg" 
                             alt="Tripora" 
-                            className="h-24 w-auto object-contain"
+                            className="h-32 w-auto object-contain"
                         />
                     </div>
                     
@@ -53,7 +53,7 @@ const HomeLayout = ({ children }) => {
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                         <div className="md:col-span-1">
-                            <img src="/logo.svg" alt="Tripora" className="h-16 w-auto object-contain mb-6 filter brightness-0 invert" />
+                            <img src="/logo.svg" alt="Tripora" className="h-32 w-auto object-contain mb-6 filter brightness-0 invert" />
                             <p className="text-stone text-body mb-6">Mở ra thế giới của những chuyến đi bất tận. Đồng hành cùng bạn trên mọi hành trình.</p>
                         </div>
                         <div>

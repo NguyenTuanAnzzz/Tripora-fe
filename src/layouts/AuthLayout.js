@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthHeader from '../components/AuthHeader';
 
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
@@ -7,13 +8,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
         
         {/* Left side - Form */}
         <div className="w-full lg:w-1/2 max-w-[480px]">
-          <div className="mb-12">
-            <a href="/">
-              <img src="/logo.svg" alt="Tripora" className="h-10 w-auto mb-16" />
-            </a>
-            <h2 className="text-heading font-light text-graphite mb-2">{title}</h2>
-            {subtitle && <p className="text-body text-stone">{subtitle}</p>}
-          </div>
+          <AuthHeader title={title} subtitle={subtitle} />
           
           {children}
         </div>

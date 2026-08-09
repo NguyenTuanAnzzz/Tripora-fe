@@ -4,44 +4,26 @@ import AuthLayout from "../layouts/AuthLayout";
 import InputField from "../components/InputField";
 import ButtonField from "../components/ButtonField";
 import ErrorMessage from "../components/ErrorMessage";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         email: "",
         password: "",
+        rememberMe: false,
     });
     const [message, setMessage] = useState("");
-
+    const auth = useAuth();
     const handleSubmit = async(e) => {
         e.preventDefault();
+        setMessage("");
 
-
-        try {
-            const response = await fetch(
-                "http://localhost:8080/api/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(form),
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                setMessage(data.message || "Đăng nhap thất bại");
-                return;
-            }
-
-            
-            navigate(`/`);
-
-        } catch (error) {
-            console.error("Error:", error);
-            setMessage("Không thể kết nối đến server");
+        const result = await auth.login(form);
+        if (result.success) {
+            navigate("/");
+        } else {
+            setMessage(result.message);
         }
     };
 
@@ -79,7 +61,25 @@ const Login = () => {
                     }
                 />
 
-                <div className="flex justify-end mb-4 -mt-2">
+                <div className="flex items-center justify-between mb-6 mt-2">
+                    <div className="flex items-center">
+                        <input
+                            id="remember-me"
+                            name="remember-me"
+                            type="checkbox"
+                            checked={form.rememberMe}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    rememberMe: e.target.checked,
+                                })
+                            }
+                            className="h-20 w-20 rounded border-paper text-ember-orange focus:ring-ember-orange cursor-pointer transition-colors accent-ember-orange"
+                        />
+                        <label htmlFor="remember-me" className=" ml-2 block text-body-sm text-stone cursor-pointer">
+                            Ghi nhớ đăng nhập
+                        </label>
+                    </div>
                     <Link
                         to="/forgot-password"
                         className="text-body-sm text-ember-orange-link font-medium hover:underline"
