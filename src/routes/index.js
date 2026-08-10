@@ -5,6 +5,7 @@ import OtpVerification from '../pages/OtpVerification';
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import OAuth2RedirectHandler from '../pages/OAuth2RedirectHandler';
+import ForgotPassword from '../pages/ForgotPassword';
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/otp/:email" element={<OtpVerification />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );
