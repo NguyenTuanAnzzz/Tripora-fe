@@ -6,7 +6,11 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(
         localStorage.getItem("token") || sessionStorage.getItem("token")
     );
-    const [name, setName] = useState("");
+    const [user, setUser] = useState({name: "",
+        email: "",
+        phone: "",
+        role: ""
+    });
 
     const isAuthenticated = !!token;
 
@@ -30,7 +34,12 @@ export const AuthProvider = ({ children }) => {
                 return { success: false, message: data.message || "Đăng nhập thất bại" };
             }
 
-            const accessToken = data.access_token;
+            const accessToken = data.access_token || data.accessToken || data.token;
+            
+            if (!accessToken) {
+                return { success: false, message: "Lỗi: Không nhận được token từ server" };
+            }
+
             setToken(accessToken);
             
             if (form.rememberMe) {
@@ -47,21 +56,25 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const getName = async () =>{
+
+    const getMyProfile = async () =>{
         try{
             const response = await fetch(
-                "http://localhost:8080/api/auth/get-name", // <-- Sửa lại API endpoint lấy thông tin user cho đúng với backend của bạn
+                "http://localhost:8080/api/get-info", 
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}` // Xóa dấu '+' thừa
+                        "Authorization": `Bearer ${token}` 
                     },
                 }
             );
             
             if (response.ok) {
                 const data = await response.json();
-                setName(data.name); // Lấy data sau khi parse JSON
+                setUser(data);
+            } else if (response.status === 401) {
+                // Token hết hạn hoặc không hợp lệ -> Đăng xuất
+                logout();
             }
         } catch (error) {
             console.error("Error:", error);
@@ -71,9 +84,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            getName();
-        } else {
-            setName("");
+            getMyProfile();
         }
     }, [token]);
 
@@ -87,7 +98,7 @@ export const AuthProvider = ({ children }) => {
     const value = {
         token,
         isAuthenticated,
-        name,
+        user,
         login,
         logout,
         

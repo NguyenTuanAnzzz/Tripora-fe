@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const auth = useAuth();
-    const name = auth.name;
+    const name = auth?.user?.name;
     
     return (
         
@@ -29,14 +29,14 @@ const Header = () => {
 
                 {/* Right Actions */}
                 {name ? (
-                    <div className="flex items-center gap-3">
+                    <a href="my-profile" className="flex items-center gap-3">
                         <span className="text-body font-medium text-stone">{name}</span>
                         <div className="w-10 h-10 rounded-full bg-pearl flex items-center justify-center text-slate-dark overflow-hidden cursor-pointer hover:ring-2 hover:ring-ember-orange transition-all border border-slate-light">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
-                    </div>
+                    </a>
                 ) : (
                     <div className="flex items-center gap-4">
                     <Link 

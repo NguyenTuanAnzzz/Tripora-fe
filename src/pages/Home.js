@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import HomeLayout from '../layouts/HomeLayout';
 
 const slides = [
     {
@@ -31,10 +30,8 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="min-h-screen font-sans flex flex-col bg-canvas-white text-slate-dark">
-            <Header />
-            <main className="flex-grow flex flex-col bg-canvas-white">
-                {/* Hero Banner Section */}
+        <HomeLayout>
+            {/* Hero Banner Section */}
                 <section className="w-full px-6 flex justify-center mt-4">
                     <div className="w-full max-w-[1200px] bg-carbon-black rounded-cards relative overflow-hidden flex flex-col items-center justify-center text-center h-[400px] md:h-[480px]">
                         {slides.map((slide, index) => (
@@ -332,9 +329,7 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
-            </main>
-            <Footer />
-        </div>
+        </HomeLayout>
     );
 };
 
