@@ -6,9 +6,7 @@ import { Navigate } from 'react-router-dom';
 const Profile = () => {
   const { user, isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+ 
   const userInfo = user || {};
   if (user.role == "ADMIN") {
     userInfo.role = "Admin";

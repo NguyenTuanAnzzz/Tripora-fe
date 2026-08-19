@@ -5,17 +5,17 @@ const slides = [
     {
         image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80",
         title: "Khám phá thế giới theo cách của bạn.",
-        subtitle: "Hàng ngàn điểm đến tuyệt đẹp đang chờ đón. Đặt phòng, chuyến bay và trải nghiệm một cách dễ dàng với nền tảng của chúng tôi."
+        subtitle: "Hàng ngàn điểm đến tuyệt đẹp đang chờ đón. Đặt tour trọn gói, trải nghiệm văn hóa địa phương một cách dễ dàng với nền tảng của chúng tôi."
     },
     {
         image: "https://images.unsplash.com/photo-1504150558240-0b4fd8946624?auto=format&fit=crop&w=1200&q=80",
         title: "Hành trình ngàn dặm bắt đầu từ một bước chân.",
-        subtitle: "Hãy để chúng tôi đồng hành cùng bạn trên mọi nẻo đường, mang đến những trải nghiệm không thể nào quên."
+        subtitle: "Hãy để chúng tôi đồng hành cùng bạn trên mọi nẻo đường, lo trọn gói di chuyển và lịch trình tại điểm tham quan."
     },
     {
         image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
         title: "Đi để tìm lại chính mình.",
-        subtitle: "Mở rộng tầm mắt và trái tim với những vùng đất mới, văn hóa mới và những con người tuyệt vời."
+        subtitle: "Mở rộng tầm mắt và trái tim với những vùng đất mới, văn hóa mới và những con người tuyệt vời cùng hướng dẫn viên bản địa."
     }
 ];
 
@@ -203,8 +203,8 @@ const Home = () => {
                                     </div>
                                 </div>
                                 <div className="w-full md:w-[60%] p-6 flex flex-col justify-center">
-                                    <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Nghỉ dưỡng 5 sao tại Bali</h3>
-                                    <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Tận hưởng không gian sang trọng với mức giá ưu đãi nhất trong năm. Áp dụng cho các đặt phòng sớm.</p>
+                                    <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Tour Phú Quốc 3 Ngày 2 Đêm</h3>
+                                    <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Trọn gói đưa đón tham quan đảo ngọc, lặn ngắm san hô bằng cano cao tốc và thưởng thức hải sản địa phương.</p>
                                     <div className="mt-auto">
                                         <button className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
                                             Khám phá ngay
@@ -222,8 +222,8 @@ const Home = () => {
                                     </div>
                                 </div>
                                 <div className="w-full md:w-[60%] p-6 flex flex-col justify-center">
-                                    <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Tour Châu Âu mùa thu</h3>
-                                    <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Hành trình khám phá vẻ đẹp lãng mạn của mùa thu Châu Âu qua Pháp, Thụy Sĩ, và Ý.</p>
+                                    <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Tour Sapa Săn Mây Trọn Gói</h3>
+                                    <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Hành trình khám phá bản Cát Cát, chinh phục đỉnh Fansipan với xe ô tô 16 chỗ đưa đón tận nơi suốt tuyến.</p>
                                     <div className="mt-auto">
                                         <button className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
                                             Khám phá ngay
@@ -285,12 +285,12 @@ const Home = () => {
                                         <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                                     ))}
                                 </div>
-                                <p className="text-body font-regular text-slate-dark italic mb-6">"Giao diện cực kỳ thân thiện và dễ sử dụng. Tôi đã đặt được chuyến bay và khách sạn cho kỳ nghỉ gia đình chỉ trong vòng 15 phút. Sẽ tiếp tục sử dụng!"</p>
+                                <p className="text-body font-regular text-slate-dark italic mb-6">"Giao diện cực kỳ thân thiện. Tôi đã đặt được Tour Đà Nẵng - Hội An cho cả gia đình chỉ trong vòng 15 phút. Lịch trình tham quan rất chi tiết!"</p>
                                 <div className="flex items-center gap-4">
                                     <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="Minh Tuấn" className="w-12 h-12 rounded-full object-cover" />
                                     <div>
                                         <h4 className="text-[16px] font-medium text-graphite">Minh Tuấn</h4>
-                                        <p className="text-caption text-pewter">Travel Blogger</p>
+                                        <p className="text-caption text-pewter">Khách du lịch</p>
                                     </div>
                                 </div>
                             </div>
@@ -301,7 +301,7 @@ const Home = () => {
                                         <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                                     ))}
                                 </div>
-                                <p className="text-body font-regular text-slate-dark italic mb-6">"Dịch vụ khách hàng tuyệt vời. Khi chuyến bay của tôi bị hoãn, đội ngũ hỗ trợ đã giúp tôi sắp xếp lại lịch trình nhanh chóng mà không mất thêm phí."</p>
+                                <p className="text-body font-regular text-slate-dark italic mb-6">"Dịch vụ tour tuyệt vời. Xe di chuyển ở điểm đến cực kỳ mới, hướng dẫn viên siêu nhiệt tình và am hiểu văn hoá địa phương."</p>
                                 <div className="flex items-center gap-4">
                                     <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Hải Yến" className="w-12 h-12 rounded-full object-cover" />
                                     <div>
@@ -317,7 +317,7 @@ const Home = () => {
                                         <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                                     ))}
                                 </div>
-                                <p className="text-body font-regular text-slate-dark italic mb-6">"Các gói ưu đãi thực sự hấp dẫn. Nhờ vậy tôi có thể đưa cả gia đình đi nghỉ dưỡng tại khách sạn 5 sao với mức giá thấp hơn nhiều so với dự kiến."</p>
+                                <p className="text-body font-regular text-slate-dark italic mb-6">"Các gói ưu đãi thực sự hấp dẫn. Đặt tour trọn gói thế này nhàn hơn hẳn việc phải tự mò mẫm thuê xe hay mua vé tham quan từng nơi."</p>
                                 <div className="flex items-center gap-4">
                                     <img src="https://i.pravatar.cc/150?u=a04258a2462d826712d" alt="Đức Trí" className="w-12 h-12 rounded-full object-cover" />
                                     <div>
