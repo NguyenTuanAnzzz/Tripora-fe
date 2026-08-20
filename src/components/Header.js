@@ -10,7 +10,7 @@ const Header = () => {
     // Danh sách menu
     const navLinks = [
         { title: 'Điểm đến', path: '/destinations' },
-        { title: 'Khám phá', path: '/explore' },
+        { title: 'Khám phá', path: '/tours' },
         { title: 'Cộng đồng', path: '/community' },
         { title: 'Về chúng tôi', path: '/about' },
     ];
@@ -55,9 +55,13 @@ const Header = () => {
                     <Link to="/my-profile" className="flex items-center gap-3">
                         <span className="text-body font-medium text-stone">{name}</span>
                         <div className="w-10 h-10 rounded-full bg-pearl flex items-center justify-center text-slate-dark overflow-hidden cursor-pointer hover:ring-2 hover:ring-ember-orange transition-all border border-slate-light">
-                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
+                            { (auth?.user?.avatar || auth?.user?.picture || auth?.user?.avatarUrl || auth?.user?.imageUrl) ? (
+                                <img src={auth.user.avatar || auth.user.picture || auth.user.avatarUrl || auth.user.imageUrl} alt={name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                            ) : (
+                                <svg className="w-6 h-6 text-pewter" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            )}
                         </div>
                     </Link>
                 ) : (

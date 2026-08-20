@@ -24,8 +24,8 @@ const Destinations = () => {
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
+                    'Content-Type': 'application/json'
+ 
                 }
             });
 
@@ -44,7 +44,7 @@ const Destinations = () => {
 
     useEffect(() => {
         getDestinations();
-    }, [page, size, searchKeyword]); // Reload lại API khi page, size hoặc search thay đổi
+    }, [page, size, searchKeyword]);
 
     const handleSearch = (keyword) => {
         if (keyword.trim()) {

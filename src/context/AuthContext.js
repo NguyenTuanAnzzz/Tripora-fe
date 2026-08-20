@@ -28,7 +28,12 @@ export const AuthProvider = ({ children }) => {
                 }
             );
 
-            const data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                data = { message: "Lỗi phản hồi từ server" };
+            }
 
             if (!response.ok) {
                 return { success: false, message: data.message || "Đăng nhập thất bại" };
@@ -101,7 +106,7 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
-        
+        getMyProfile
     };
 
     return (

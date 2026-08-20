@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HomeLayout from '../layouts/HomeLayout';
+import { Link } from 'react-router-dom';
 
 const slides = [
     {
@@ -120,10 +121,10 @@ const Home = () => {
                                 <h2 className="text-heading font-light text-graphite mb-2">Điểm đến thịnh hành</h2>
                                 <p className="text-subheading font-regular text-slate-dark">Những địa điểm được yêu thích nhất do cộng đồng bình chọn</p>
                             </div>
-                            <button className="hidden md:flex items-center gap-2 text-ember-orange font-medium text-body hover:opacity-80 transition-opacity">
+                            <Link to="/tours" className="hidden md:flex items-center gap-2 text-ember-orange font-medium text-body hover:opacity-80 transition-opacity">
                                 Xem tất cả
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                            </button>
+                            </Link>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
@@ -206,10 +207,10 @@ const Home = () => {
                                     <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Tour Phú Quốc 3 Ngày 2 Đêm</h3>
                                     <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Trọn gói đưa đón tham quan đảo ngọc, lặn ngắm san hô bằng cano cao tốc và thưởng thức hải sản địa phương.</p>
                                     <div className="mt-auto">
-                                        <button className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
+                                        <Link to="/tours/1" className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
                                             Khám phá ngay
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -225,10 +226,10 @@ const Home = () => {
                                     <h3 className="text-heading-sm font-medium text-graphite mb-2 group-hover:text-ember-orange transition-colors">Tour Sapa Săn Mây Trọn Gói</h3>
                                     <p className="text-body font-regular text-pewter mb-4 line-clamp-2">Hành trình khám phá bản Cát Cát, chinh phục đỉnh Fansipan với xe ô tô 16 chỗ đưa đón tận nơi suốt tuyến.</p>
                                     <div className="mt-auto">
-                                        <button className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
+                                        <Link to="/tours/3" className="text-ember-orange font-medium text-body hover:underline flex items-center gap-2">
                                             Khám phá ngay
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

@@ -43,7 +43,12 @@ const Register = () => {
                 }
             );
 
-            const data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                data = { message: "Lỗi phản hồi từ server" };
+            }
 
             if (!response.ok) {
                 setMessage(data.message || "Đăng ký thất bại");
