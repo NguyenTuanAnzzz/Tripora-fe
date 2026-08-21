@@ -4,7 +4,7 @@ import { Plus, Edit2, Filter, Shield, User, Star } from 'lucide-react';
 import Pagination from '../../components/Pagination';
 import SearchBar from '../../components/SearchBar';
 import { useAuth } from '../../context/AuthContext';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import SelectField from '../../components/SelectField';
 const UserManagement = () => {
     const { token } = useAuth();
@@ -68,6 +68,15 @@ const UserManagement = () => {
         }
     }, [page, size, searchKeyword, role, status, token]);
 
+     const handleSearch = (keyword) => {
+        if (keyword.trim()) {
+            setSearchParams({ page: 0, keyword: keyword.trim() }); 
+        } else {
+            setSearchParams({ page: 0 }); // Xóa keyword khỏi URL nếu search rỗng
+        }
+    };
+
+
     const getAvatarStyle = (name) => {
         const styles = [
             'bg-blue-100 text-blue-600',
@@ -103,10 +112,13 @@ const UserManagement = () => {
                         </p>
                     </div>
 
-                    <button className="flex items-center gap-2 bg-ember-orange text-canvas-white px-[24px] py-[14px] rounded-full font-medium hover:bg-orange-600 transition-all shadow-[0_4px_10px_rgba(255,90,47,0.3)] hover:-translate-y-1">
+                    <Link 
+                        to="/admin/users/create"
+                        className="flex items-center gap-2 bg-ember-orange text-canvas-white px-[24px] py-[14px] rounded-full font-medium hover:bg-orange-600 transition-all shadow-[0_4px_10px_rgba(255,90,47,0.3)] hover:-translate-y-1"
+                    >
                         <Plus className="w-5 h-5 flex-shrink-0" />
                         <span>Thêm người dùng mới</span>
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -118,6 +130,8 @@ const UserManagement = () => {
                         compact={true}
                         className="w-full"
                         placeholder="Tìm theo tên, SĐT, email..."
+                        initialValue={searchKeyword}
+                        onSearch={handleSearch}
                     />
                 </div>
 
@@ -198,7 +212,7 @@ const UserManagement = () => {
                                     <td className="px-6 py-4 whitespace-nowrap align-middle">
                                         <div className="flex items-center gap-3">
                                             <div className={`h-[40px] w-[40px] rounded-full flex items-center justify-center font-bold text-[16px] shadow-sm flex-shrink-0 ${getAvatarStyle(user.name)}`}>
-                                                {user.name.charAt(0)}
+                                                <img src={user.avatar} className="rounded-full"/>
                                             </div>
                                             <div className="min-w-0">
                                                 <div className="text-[14px] font-bold text-graphite mb-0.5 group-hover:text-ember-orange transition-colors truncate">{user.name}</div>
@@ -243,9 +257,7 @@ const UserManagement = () => {
 
                 {/* Custom Footer Pagination container */}
                 <div className="bg-canvas-white px-8 py-5 border-t border-paper flex items-center justify-between">
-                    <div className="text-[14px] text-pewter font-medium hidden md:block">
-                        Hiển thị <span className="text-slate-dark font-bold">1 - 5</span> trong số <span className="text-slate-dark font-bold">20</span> kết quả
-                    </div>
+                    
                     <div className="[&>div]:!mt-0">
                         <Pagination
                             currentPage={page}
