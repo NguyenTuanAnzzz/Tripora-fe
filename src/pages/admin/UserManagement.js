@@ -244,9 +244,9 @@ const UserManagement = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap align-middle text-center">
                                         <div className="flex items-center justify-center gap-3">
-                                            <button className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center bg-pearl border border-paper text-slate-dark hover:bg-ember-orange hover:text-canvas-white hover:border-ember-orange transition-all shadow-sm" title="Chỉnh sửa">
+                                            <Link to={`/admin/users/${user.id}`} className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center bg-pearl border border-paper text-slate-dark hover:bg-ember-orange hover:text-canvas-white hover:border-ember-orange transition-all shadow-sm" title="Chỉnh sửa">
                                                 <Edit2 className="w-5 h-5" />
-                                            </button>
+                                            </Link>
                                         </div>
                                     </td>
                                 </tr>
