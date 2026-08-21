@@ -13,6 +13,7 @@ import TourList from '../pages/TourList';
 import TourDetail from '../pages/TourDetail';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import DestinationManagement from '../pages/admin/DestinationManagement';
+import CreateDestination from '../pages/admin/CreateDestination';
 import UserManagement from '../pages/admin/UserManagement';
 import CreateUser from '../pages/admin/CreateUser';
 import UserDetail from '../pages/admin/UserDetail';
@@ -48,6 +49,7 @@ const AppRoutes = () => {
         <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/destinations" element={<DestinationManagement />} />
+          <Route path="/admin/destinations/create" element={<CreateDestination />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/users/create" element={<CreateUser />} />
           <Route path="/admin/users/:id" element={<UserDetail />} />

@@ -1,6 +1,8 @@
 import React from 'react';
 import HomeLayout from '../layouts/HomeLayout';
 import { useParams, Link } from 'react-router-dom';
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 
 const TourDetail = () => {
     const { id } = useParams();
@@ -56,6 +58,45 @@ const TourDetail = () => {
                                 Trải nghiệm một Phú Quốc thu nhỏ với lịch trình được tối ưu hóa cho gia đình và nhóm bạn. 
                                 Chúng tôi sẽ lo toàn bộ việc di chuyển, vé tham quan và lưu trú.
                             </p>
+
+                            {/* PhotoSwipe Gallery */}
+                            <div className="mb-[40px]">
+                                <h3 className="text-[24px] font-medium text-graphite mb-6">Thư viện ảnh</h3>
+                                <Gallery>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        <Item
+                                            original="https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&w=1200&q=80"
+                                            thumbnail="https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&w=400&q=80"
+                                            width="1200"
+                                            height="800"
+                                        >
+                                            {({ ref, open }) => (
+                                                <img ref={ref} onClick={open} src="https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&w=400&q=80" className="w-full h-32 md:h-48 object-cover rounded-[10px] cursor-pointer hover:opacity-80 transition-opacity" alt="Phú Quốc" />
+                                            )}
+                                        </Item>
+                                        <Item
+                                            original="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80"
+                                            thumbnail="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=400&q=80"
+                                            width="1200"
+                                            height="800"
+                                        >
+                                            {({ ref, open }) => (
+                                                <img ref={ref} onClick={open} src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=400&q=80" className="w-full h-32 md:h-48 object-cover rounded-[10px] cursor-pointer hover:opacity-80 transition-opacity" alt="Hội An" />
+                                            )}
+                                        </Item>
+                                        <Item
+                                            original="https://images.unsplash.com/photo-1542323869-959fb29f6fcb?auto=format&fit=crop&w=1200&q=80"
+                                            thumbnail="https://images.unsplash.com/photo-1542323869-959fb29f6fcb?auto=format&fit=crop&w=400&q=80"
+                                            width="1200"
+                                            height="800"
+                                        >
+                                            {({ ref, open }) => (
+                                                <img ref={ref} onClick={open} src="https://images.unsplash.com/photo-1542323869-959fb29f6fcb?auto=format&fit=crop&w=400&q=80" className="w-full h-32 md:h-48 object-cover rounded-[10px] cursor-pointer hover:opacity-80 transition-opacity" alt="Biển" />
+                                            )}
+                                        </Item>
+                                    </div>
+                                </Gallery>
+                            </div>
 
                             <div className="bg-canvas-white border border-paper rounded-[20px] p-[40px] mb-[80px]">
                                 <h3 className="text-[24px] font-medium text-graphite mb-6">Thông tin chi tiết</h3>
