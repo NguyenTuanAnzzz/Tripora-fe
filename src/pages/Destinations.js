@@ -82,7 +82,7 @@ const Destinations = () => {
                         <div key={dest.id} className="bg-canvas-white border border-paper rounded-cards overflow-hidden flex flex-col group cursor-pointer transition-shadow hover:shadow-lg hover:border-ember-orange/30">
                             <div className="h-[240px] relative overflow-hidden">
                                 <img 
-                                    src={dest.image} 
+                                    src={dest.imageUrls && dest.imageUrls.length > 0 ? dest.imageUrls[0] : 'https://via.placeholder.com/1200x800?text=No+Image'} 
                                     alt={dest.name} 
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                                 />

@@ -4,13 +4,14 @@ import { Plus, Edit2, Trash2, MapPin } from 'lucide-react';
 import Pagination from '../../components/Pagination';
 import SearchBar from '../../components/SearchBar';
 import { useAuth } from '../../context/AuthContext';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../../components/ErrorMessage';
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
 const DestinationManagement = () => {
     const { token } = useAuth();
+    const navigate = useNavigate();
     const [destinations, setDestinations] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -165,7 +166,7 @@ const DestinationManagement = () => {
                                     {/* Edit and Delete Actions - Hidden until hover */}
                                     <div className="absolute top-3 right-3 flex items-center gap-2 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-[-10px] group-hover:translate-y-0">
                                         <button 
-                                            onClick={(e) => { e.stopPropagation(); alert('Sửa: ' + item.name); }}
+                                            onClick={(e) => { e.stopPropagation(); navigate(`/admin/destinations/${item.id}`); }}
                                             className="w-10 h-10 rounded-full flex items-center justify-center bg-white/90 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg hover:shadow-blue-500/50 backdrop-blur-sm" title="Chỉnh sửa"
                                         >
                                             <Edit2 className="w-5 h-5" />
