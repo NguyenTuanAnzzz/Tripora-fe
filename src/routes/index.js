@@ -15,6 +15,8 @@ import AdminDashboard from '../pages/admin/AdminDashboard';
 import DestinationManagement from '../pages/admin/DestinationManagement';
 import CreateDestination from '../pages/admin/CreateDestination';
 import DestinationDetail from '../pages/admin/DestinationDetail';
+import TourManagement from '../pages/admin/TourManagement';
+import CreateTour from '../pages/admin/CreateTour';
 import UserManagement from '../pages/admin/UserManagement';
 import CreateUser from '../pages/admin/CreateUser';
 import UserDetail from '../pages/admin/UserDetail';
@@ -52,6 +54,8 @@ const AppRoutes = () => {
           <Route path="/admin/destinations" element={<DestinationManagement />} />
           <Route path="/admin/destinations/create" element={<CreateDestination />} />
           <Route path="/admin/destinations/:id" element={<DestinationDetail />} />
+          <Route path="/admin/tours" element={<TourManagement />} />
+          <Route path="/admin/tours/create" element={<CreateTour />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/users/create" element={<CreateUser />} />
           <Route path="/admin/users/:id" element={<UserDetail />} />
