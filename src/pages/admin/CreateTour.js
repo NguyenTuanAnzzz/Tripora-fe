@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { ArrowLeft, X, UploadCloud, MapPin, Bus, AlertCircle } from 'lucide-react';
+import { 
+    ArrowLeft, X, UploadCloud, MapPin, Bus, AlertCircle, 
+    Calendar, Plus, Clock, Utensils, Bed, Coffee, Navigation, Camera, Trash2
+} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -30,6 +33,9 @@ const CreateTour = () => {
     });
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
+    
+    // Itinerary State
+    const [itineraries, setItineraries] = useState([]);
 
     useEffect(() => {
         const fetchDestinations = async () => {
@@ -90,6 +96,45 @@ const CreateTour = () => {
         });
     };
 
+    // --- ITINERARY LOGIC ---
+    const addItineraryItem = (day = 1) => {
+        setItineraries(prev => [
+            ...prev,
+            {
+                id: Date.now().toString(), // temporary id for UI key
+                dayNumber: day,
+                timeOfDay: 'MORNING',
+                title: '',
+                description: '',
+                startTime: '',
+                endTime: '',
+                location: '',
+                activityType: 'VISIT'
+            }
+        ]);
+    };
+
+    const removeItineraryItem = (id) => {
+        setItineraries(prev => prev.filter(item => item.id !== id));
+    };
+
+    const handleItineraryChange = (id, field, value) => {
+        setItineraries(prev => prev.map(item => 
+            item.id === id ? { ...item, [field]: value } : item
+        ));
+    };
+
+    const getActivityIcon = (type) => {
+        switch(type) {
+            case 'TRANSPORT': return <Bus className="w-4 h-4" />;
+            case 'MEAL': return <Utensils className="w-4 h-4" />;
+            case 'VISIT': return <Camera className="w-4 h-4" />;
+            case 'HOTEL': return <Bed className="w-4 h-4" />;
+            case 'FREE_TIME': return <Coffee className="w-4 h-4" />;
+            default: return <Navigation className="w-4 h-4" />;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -110,15 +155,32 @@ const CreateTour = () => {
 
         try {
             const formDataToSend = new FormData();
+            
+            // Append basic info
             Object.keys(formData).forEach(key => {
                 if (formData[key] !== '') {
                     formDataToSend.append(key, formData[key]);
                 }
             });
 
+            // Append images
             images.forEach(image => {
                 formDataToSend.append('images', image);
             });
+
+            // Append itineraries as JSON string so backend can parse it
+            const itinerariesClean = itineraries.map((item, index) => ({
+                dayNumber: parseInt(item.dayNumber) || 1,
+                timeOfDay: item.timeOfDay,
+                displayOrder: index + 1,
+                title: item.title,
+                description: item.description,
+                startTime: item.startTime || null,
+                endTime: item.endTime || null,
+                location: item.location,
+                activityType: item.activityType
+            }));
+            formDataToSend.append('itinerariesStr', JSON.stringify(itinerariesClean));
 
             const response = await fetch('http://localhost:8080/api/tours', {
                 method: 'POST',
@@ -160,6 +222,7 @@ const CreateTour = () => {
                 {error && <div className="mb-6"><ErrorMessage message={error} /></div>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* SECTION 1: BASIC INFO */}
                     <div className="bg-white rounded-[24px] p-8 shadow-sm border border-paper">
                         <h2 className="text-xl font-bold text-graphite mb-6 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-full bg-orange-100 text-ember-orange flex items-center justify-center text-sm">1</span>
@@ -186,7 +249,7 @@ const CreateTour = () => {
                                     name="description"
                                     value={formData.description}
                                     onChange={handleInputChange}
-                                    placeholder="Giới thiệu về lịch trình, điểm nổi bật..."
+                                    placeholder="Giới thiệu chung về tour..."
                                     className="w-full h-[120px] p-4 rounded-xl border border-paper bg-pearl/30 focus:bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all resize-none"
                                 ></textarea>
                             </div>
@@ -229,6 +292,7 @@ const CreateTour = () => {
                         </div>
                     </div>
 
+                    {/* SECTION 2: TIME & PRICE */}
                     <div className="bg-white rounded-[24px] p-8 shadow-sm border border-paper">
                         <h2 className="text-xl font-bold text-graphite mb-6 flex items-center gap-2">
                             <span className="w-8 h-8 rounded-full bg-orange-100 text-ember-orange flex items-center justify-center text-sm">2</span>
@@ -312,7 +376,6 @@ const CreateTour = () => {
                                         className="w-full h-[52px] px-4 rounded-xl border border-paper bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all"
                                         required
                                     />
-                                    <p className="text-xs text-pewter mt-1">VD: 30% tổng giá trị tour</p>
                                 </div>
                                 <div>
                                     <label className="block text-[14px] font-medium text-slate-dark mb-2">Hạn thanh toán nốt (ngày) <span className="text-red-500">*</span></label>
@@ -326,15 +389,199 @@ const CreateTour = () => {
                                         className="w-full h-[52px] px-4 rounded-xl border border-paper bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all"
                                         required
                                     />
-                                    <p className="text-xs text-pewter mt-1">Số ngày trước khởi hành phải thanh toán 100%</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* SECTION 3: ITINERARY (Lịch trình) */}
+                    <div className="bg-white rounded-[24px] p-8 shadow-sm border border-paper">
+                        <div className="flex justify-between items-center mb-8">
+                            <h2 className="text-xl font-bold text-graphite flex items-center gap-2">
+                                <span className="w-8 h-8 rounded-full bg-orange-100 text-ember-orange flex items-center justify-center text-sm shadow-sm">3</span>
+                                Lịch trình chi tiết (Itinerary)
+                            </h2>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const maxDay = itineraries.length > 0 ? Math.max(...itineraries.map(i => i.dayNumber)) : 0;
+                                    addItineraryItem(maxDay + 1);
+                                }}
+                                className="flex items-center gap-2 text-sm font-bold text-white bg-slate-dark px-5 py-2.5 rounded-full hover:bg-carbon-black transition-all shadow-md"
+                            >
+                                <Plus className="w-5 h-5" /> Thêm Ngày Mới
+                            </button>
+                        </div>
+                        
+                        {itineraries.length === 0 ? (
+                            <div className="text-center py-16 border-2 border-dashed border-paper rounded-2xl bg-pearl/20 hover:bg-pearl/40 transition-colors">
+                                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mx-auto mb-4">
+                                    <Calendar className="w-10 h-10 text-pewter" />
+                                </div>
+                                <h3 className="text-graphite font-bold text-lg mb-1">Chưa có lịch trình nào</h3>
+                                <p className="text-pewter text-sm mb-6 max-w-md mx-auto">Tạo các ngày và thêm các hoạt động tham quan, ăn uống, di chuyển để khách hàng dễ hình dung chuyến đi.</p>
+                                <button 
+                                    type="button" 
+                                    onClick={() => addItineraryItem(1)} 
+                                    className="bg-ember-orange text-white px-6 py-3 rounded-full font-bold shadow-[0_4px_10px_rgba(255,90,47,0.3)] hover:-translate-y-1 transition-all"
+                                >
+                                    Bắt đầu tạo lịch trình
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="space-y-12 relative before:absolute before:inset-0 before:ml-[35px] before:-translate-x-px before:h-full before:w-1 before:bg-pearl before:rounded-full">
+                                {Array.from(new Set(itineraries.map(item => item.dayNumber))).sort((a,b) => a - b).map(day => (
+                                    <div key={`day-${day}`} className="relative">
+                                        {/* Day Header Badge */}
+                                        <div className="relative z-10 flex items-center mb-8">
+                                            <div className="bg-ember-orange text-white font-black px-6 py-3 rounded-full shadow-md text-base tracking-wide uppercase ml-2 flex items-center gap-2">
+                                                <Calendar className="w-5 h-5" />
+                                                Ngày {day}
+                                            </div>
+                                        </div>
+
+                                        {/* Activities for this day */}
+                                        <div className="space-y-8">
+                                            {itineraries.filter(i => i.dayNumber === day).sort((a,b) => a.displayOrder - b.displayOrder).map((item, index) => (
+                                                <div key={item.id} className="relative flex items-start group pl-[80px]">
+                                                    
+                                                    {/* Timeline Dot */}
+                                                    <div className="absolute left-[13px] top-6 flex items-center justify-center w-12 h-12 rounded-full border-4 border-white bg-pearl text-slate-dark shadow-sm z-10 group-hover:bg-ember-orange group-hover:text-white transition-colors duration-300">
+                                                        <div className="w-6 h-6 flex items-center justify-center">
+                                                            {getActivityIcon(item.activityType)}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Card Content */}
+                                                    <div className="w-full bg-white border-2 border-paper rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 relative group-hover:border-ember-orange/50">
+                                                        {/* Delete Button */}
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => removeItineraryItem(item.id)}
+                                                            className="absolute -top-4 -right-4 w-10 h-10 bg-white text-red-500 rounded-full flex items-center justify-center border-2 border-paper shadow-md hover:bg-red-500 hover:text-white transition-all z-20"
+                                                            title="Xóa hoạt động này"
+                                                        >
+                                                            <Trash2 className="w-5 h-5" />
+                                                        </button>
+
+                                                        {/* Activity Header Settings */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-pearl/30 p-4 rounded-xl border border-paper">
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-slate-dark mb-1">Buổi</label>
+                                                                <select
+                                                                    value={item.timeOfDay}
+                                                                    onChange={(e) => handleItineraryChange(item.id, 'timeOfDay', e.target.value)}
+                                                                    className="w-full h-11 px-3 bg-white border border-paper rounded-lg outline-none focus:border-ember-orange text-sm font-medium text-slate-dark"
+                                                                >
+                                                                    <option value="MORNING">Buổi Sáng</option>
+                                                                    <option value="NOON">Buổi Trưa</option>
+                                                                    <option value="AFTERNOON">Buổi Chiều</option>
+                                                                    <option value="EVENING">Buổi Tối</option>
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-slate-dark mb-1">Phân loại</label>
+                                                                <select
+                                                                    value={item.activityType}
+                                                                    onChange={(e) => handleItineraryChange(item.id, 'activityType', e.target.value)}
+                                                                    className="w-full h-11 px-3 bg-white border border-paper rounded-lg outline-none focus:border-ember-orange text-sm font-medium text-slate-dark"
+                                                                >
+                                                                    <option value="VISIT">Tham quan</option>
+                                                                    <option value="MEAL">Ăn uống</option>
+                                                                    <option value="TRANSPORT">Di chuyển</option>
+                                                                    <option value="HOTEL">Khách sạn</option>
+                                                                    <option value="FREE_TIME">Tự do</option>
+                                                                    <option value="OTHER">Khác</option>
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-slate-dark mb-1">Giờ bắt đầu</label>
+                                                                <div className="relative">
+                                                                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pewter" />
+                                                                    <input 
+                                                                        type="time"
+                                                                        value={item.startTime}
+                                                                        onChange={(e) => handleItineraryChange(item.id, 'startTime', e.target.value)}
+                                                                        className="w-full h-11 pl-10 pr-3 bg-white border border-paper rounded-lg outline-none focus:border-ember-orange text-sm font-medium text-slate-dark"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-slate-dark mb-1">Giờ kết thúc</label>
+                                                                <div className="relative">
+                                                                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pewter" />
+                                                                    <input 
+                                                                        type="time"
+                                                                        value={item.endTime}
+                                                                        onChange={(e) => handleItineraryChange(item.id, 'endTime', e.target.value)}
+                                                                        className="w-full h-11 pl-10 pr-3 bg-white border border-paper rounded-lg outline-none focus:border-ember-orange text-sm font-medium text-slate-dark"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Title & Location */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                                            <div>
+                                                                <label className="block text-sm font-bold text-slate-dark mb-2">Tiêu đề hoạt động <span className="text-red-500">*</span></label>
+                                                                <input 
+                                                                    type="text" required
+                                                                    value={item.title}
+                                                                    onChange={(e) => handleItineraryChange(item.id, 'title', e.target.value)}
+                                                                    placeholder="VD: Tham quan Phố cổ Hội An"
+                                                                    className="w-full h-[52px] px-4 text-base bg-white border border-paper rounded-xl outline-none focus:border-ember-orange focus:ring-1 focus:ring-ember-orange placeholder:font-normal placeholder:text-pewter transition-all"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-sm font-bold text-slate-dark mb-2">Địa điểm</label>
+                                                                <div className="relative">
+                                                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pewter" />
+                                                                    <input 
+                                                                        type="text"
+                                                                        value={item.location}
+                                                                        onChange={(e) => handleItineraryChange(item.id, 'location', e.target.value)}
+                                                                        placeholder="VD: Hội An, Quảng Nam"
+                                                                        className="w-full h-[52px] pl-11 pr-4 text-base bg-white border border-paper rounded-xl outline-none focus:border-ember-orange focus:ring-1 focus:ring-ember-orange placeholder:font-normal placeholder:text-pewter transition-all"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Description */}
+                                                        <div>
+                                                            <label className="block text-sm font-bold text-slate-dark mb-2">Mô tả chi tiết</label>
+                                                            <textarea
+                                                                value={item.description}
+                                                                onChange={(e) => handleItineraryChange(item.id, 'description', e.target.value)}
+                                                                placeholder="Mô tả chi tiết hoạt động này..."
+                                                                className="w-full p-4 text-base text-slate-dark bg-white border border-paper rounded-xl outline-none focus:border-ember-orange focus:ring-1 focus:ring-ember-orange transition-all resize-none min-h-[120px]"
+                                                            ></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Add Activity Button for this day */}
+                                        <div className="pl-[80px] mt-6 relative z-10">
+                                            <button
+                                                type="button"
+                                                onClick={() => addItineraryItem(day)}
+                                                className="flex items-center gap-2 text-sm font-bold text-slate-dark bg-white border-2 border-dashed border-pewter px-6 py-3 rounded-xl hover:border-ember-orange hover:text-ember-orange hover:bg-orange-50 transition-all w-full justify-center"
+                                            >
+                                                <Plus className="w-5 h-5" /> Thêm hoạt động vào Ngày {day}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* SECTION 4: IMAGES */}
                     <div className="bg-white rounded-[24px] p-8 shadow-sm border border-paper">
                         <h2 className="text-xl font-bold text-graphite mb-6 flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-full bg-orange-100 text-ember-orange flex items-center justify-center text-sm">3</span>
+                            <span className="w-8 h-8 rounded-full bg-orange-100 text-ember-orange flex items-center justify-center text-sm">4</span>
                             Hình ảnh Tour <span className="text-red-500 ml-1 text-sm">*</span>
                         </h2>
 
