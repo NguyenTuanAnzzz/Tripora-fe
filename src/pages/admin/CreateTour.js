@@ -14,9 +14,10 @@ const CreateTour = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     
-    // Dependencies
     const [destinations, setDestinations] = useState([]);
-    const [vehicles, setVehicles] = useState([]);
+    const [hotels, setHotels] = useState([]);
+    const [restaurants, setRestaurants] = useState([]);
+    const [policies, setPolicies] = useState([]);
     
     const [formData, setFormData] = useState({
         name: '',
@@ -29,7 +30,7 @@ const CreateTour = () => {
         remainingDueDays: '15',
         availableSlots: '',
         destinationId: '',
-        vehicleId: ''
+        cancellationPolicyId: ''
     });
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
@@ -50,21 +51,47 @@ const CreateTour = () => {
             } catch (err) {}
         };
 
-        const fetchVehicles = async () => {
+        const fetchHotels = async () => {
             try {
-                const res = await fetch('http://localhost:8080/api/vehicles?size=100', {
+                const res = await fetch('http://localhost:8080/api/hotels?all=true&size=100', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    setVehicles(data.content || data);
+                    setHotels(data.content || data);
+                }
+            } catch (err) {}
+        };
+
+        const fetchRestaurants = async () => {
+            try {
+                const res = await fetch('http://localhost:8080/api/restaurants?all=true&size=100', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setRestaurants(data.content || data);
+                }
+            } catch (err) {}
+        };
+
+        const fetchPolicies = async () => {
+            try {
+                const res = await fetch('http://localhost:8080/api/cancellation-policies?size=100', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setPolicies(data.content || data);
                 }
             } catch (err) {}
         };
 
         if (token) {
             fetchDestinations();
-            fetchVehicles();
+            fetchHotels();
+            fetchRestaurants();
+            fetchPolicies();
         }
     }, [token]);
 
@@ -109,7 +136,9 @@ const CreateTour = () => {
                 startTime: '',
                 endTime: '',
                 location: '',
-                activityType: 'VISIT'
+                activityType: 'VISIT',
+                hotelId: '',
+                restaurantId: ''
             }
         ]);
     };
@@ -168,7 +197,7 @@ const CreateTour = () => {
                 formDataToSend.append('images', image);
             });
 
-            // Append itineraries as JSON string so backend can parse it
+            // Append itineraries for Spring @ModelAttribute list
             const itinerariesClean = itineraries.map((item, index) => ({
                 dayNumber: parseInt(item.dayNumber) || 1,
                 timeOfDay: item.timeOfDay,
@@ -178,11 +207,20 @@ const CreateTour = () => {
                 startTime: item.startTime || null,
                 endTime: item.endTime || null,
                 location: item.location,
-                activityType: item.activityType
+                activityType: item.activityType,
+                hotelId: item.hotelId || null,
+                restaurantId: item.restaurantId || null
             }));
-            formDataToSend.append('itinerariesStr', JSON.stringify(itinerariesClean));
+            
+            itinerariesClean.forEach((itinerary, i) => {
+                Object.keys(itinerary).forEach(key => {
+                    if (itinerary[key] !== null) {
+                        formDataToSend.append(`itineraries[${i}].${key}`, itinerary[key]);
+                    }
+                });
+            });
 
-            const response = await fetch('http://localhost:8080/api/tours', {
+            const response = await fetch('http://localhost:8080/api/tours/create', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -254,7 +292,7 @@ const CreateTour = () => {
                                 ></textarea>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 gap-5">
                                 <div>
                                     <label className="block text-[14px] font-medium text-slate-dark mb-2 flex items-center gap-2">
                                         <MapPin className="w-4 h-4 text-pewter" /> Điểm đến (Destination) <span className="text-red-500">*</span>
@@ -269,22 +307,6 @@ const CreateTour = () => {
                                         <option value="">-- Chọn điểm đến --</option>
                                         {destinations.map(dest => (
                                             <option key={dest.id} value={dest.id}>{dest.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-[14px] font-medium text-slate-dark mb-2 flex items-center gap-2">
-                                        <Bus className="w-4 h-4 text-pewter" /> Phương tiện di chuyển
-                                    </label>
-                                    <select
-                                        name="vehicleId"
-                                        value={formData.vehicleId}
-                                        onChange={handleInputChange}
-                                        className="w-full h-[52px] px-4 rounded-xl border border-paper bg-pearl/30 focus:bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all appearance-none"
-                                    >
-                                        <option value="">-- Chọn phương tiện (Tùy chọn) --</option>
-                                        {vehicles.map(veh => (
-                                            <option key={veh.id} value={veh.id}>{veh.name}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -363,7 +385,7 @@ const CreateTour = () => {
                                 </div>
                             </div>
 
-                            <div className="bg-orange-50 rounded-xl p-5 border border-orange-100 grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="bg-orange-50 rounded-xl p-5 border border-orange-100 grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
                                     <label className="block text-[14px] font-medium text-slate-dark mb-2 flex items-center gap-1"><AlertCircle className="w-4 h-4 text-ember-orange"/> Phần trăm cọc (%) <span className="text-red-500">*</span></label>
                                     <input
@@ -389,6 +411,22 @@ const CreateTour = () => {
                                         className="w-full h-[52px] px-4 rounded-xl border border-paper bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all"
                                         required
                                     />
+                                </div>
+                                <div>
+                                    <label className="block text-[14px] font-medium text-slate-dark mb-2 flex items-center gap-1"><AlertCircle className="w-4 h-4 text-ember-orange"/> Chính sách hủy</label>
+                                    <select
+                                        name="cancellationPolicyId"
+                                        value={formData.cancellationPolicyId}
+                                        onChange={handleInputChange}
+                                        className="w-full h-[52px] px-4 rounded-xl border border-paper bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all"
+                                    >
+                                        <option value="">-- Mặc định --</option>
+                                        {policies.map(policy => (
+                                            <option key={policy.id} value={policy.id}>
+                                                {policy.name} {policy.isDefault ? '(Mặc định)' : ''}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -548,7 +586,7 @@ const CreateTour = () => {
                                                         </div>
 
                                                         {/* Description */}
-                                                        <div>
+                                                        <div className="mb-6">
                                                             <label className="block text-sm font-bold text-slate-dark mb-2">Mô tả chi tiết</label>
                                                             <textarea
                                                                 value={item.description}
@@ -557,6 +595,43 @@ const CreateTour = () => {
                                                                 className="w-full p-4 text-base text-slate-dark bg-white border border-paper rounded-xl outline-none focus:border-ember-orange focus:ring-1 focus:ring-ember-orange transition-all resize-none min-h-[120px]"
                                                             ></textarea>
                                                         </div>
+
+                                                        {/* Hotel & Restaurant Selectors */}
+                                                        {item.activityType === 'HOTEL' && (
+                                                            <div>
+                                                                <label className="block text-sm font-bold text-slate-dark mb-2 flex items-center gap-2">
+                                                                    <Bed className="w-4 h-4 text-pewter" /> Khách sạn (Tùy chọn)
+                                                                </label>
+                                                                <select
+                                                                    value={item.hotelId}
+                                                                    onChange={(e) => handleItineraryChange(item.id, 'hotelId', e.target.value)}
+                                                                    className="w-full h-[52px] px-4 rounded-xl border border-paper bg-pearl/30 focus:bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all appearance-none"
+                                                                >
+                                                                    <option value="">-- Chọn khách sạn --</option>
+                                                                    {hotels.map(h => (
+                                                                        <option key={h.id} value={h.id}>{h.name}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                        )}
+
+                                                        {item.activityType === 'MEAL' && (
+                                                            <div>
+                                                                <label className="block text-sm font-bold text-slate-dark mb-2 flex items-center gap-2">
+                                                                    <Utensils className="w-4 h-4 text-pewter" /> Nhà hàng (Tùy chọn)
+                                                                </label>
+                                                                <select
+                                                                    value={item.restaurantId}
+                                                                    onChange={(e) => handleItineraryChange(item.id, 'restaurantId', e.target.value)}
+                                                                    className="w-full h-[52px] px-4 rounded-xl border border-paper bg-pearl/30 focus:bg-white focus:border-ember-orange focus:ring-1 focus:ring-ember-orange outline-none transition-all appearance-none"
+                                                                >
+                                                                    <option value="">-- Chọn nhà hàng --</option>
+                                                                    {restaurants.map(r => (
+                                                                        <option key={r.id} value={r.id}>{r.name}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ))}

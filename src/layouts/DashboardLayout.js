@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Map, Truck, FileText, Settings, LogOut, Ticket, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, Users, Map, Truck, FileText, Settings, LogOut, Ticket, MessageSquare, Building2, Utensils } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const DashboardLayout = ({ children, role }) => {
@@ -11,6 +11,8 @@ const DashboardLayout = ({ children, role }) => {
         { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/admin/tours', icon: Map, label: 'Quản lý Tour' },
         { path: '/admin/destinations', icon: Map, label: 'Điểm đến' },
+        { path: '/admin/hotels', icon: Building2, label: 'Khách sạn' },
+        { path: '/admin/restaurants', icon: Utensils, label: 'Nhà hàng' },
         { path: '/admin/vehicles', icon: Truck, label: 'Phương tiện' },
         { path: '/admin/bookings', icon: FileText, label: 'Bookings' },
         { path: '/admin/users', icon: Users, label: 'Người dùng' },

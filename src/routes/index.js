@@ -23,6 +23,12 @@ import VehicleDetail from '../pages/admin/VehicleDetail';
 import UserManagement from '../pages/admin/UserManagement';
 import CreateUser from '../pages/admin/CreateUser';
 import UserDetail from '../pages/admin/UserDetail';
+import HotelManagement from '../pages/admin/HotelManagement';
+import CreateHotel from '../pages/admin/CreateHotel';
+import RestaurantManagement from '../pages/admin/RestaurantManagement';
+import CreateRestaurant from '../pages/admin/CreateRestaurant';
+import PolicyManagement from '../pages/admin/PolicyManagement';
+import CreatePolicy from '../pages/admin/CreatePolicy';
 import StaffDashboard from '../pages/staff/StaffDashboard';
 import EnterPhone from '../pages/EnterPhone';
 import GlobalCheck from '../components/GlobalCheck';
@@ -59,12 +65,18 @@ const AppRoutes = () => {
           <Route path="/admin/destinations/:id" element={<DestinationDetail />} />
           <Route path="/admin/tours" element={<TourManagement />} />
           <Route path="/admin/tours/create" element={<CreateTour />} />
+          <Route path="/admin/hotels" element={<HotelManagement />} />
+          <Route path="/admin/hotels/create" element={<CreateHotel />} />
+          <Route path="/admin/restaurants" element={<RestaurantManagement />} />
+          <Route path="/admin/restaurants/create" element={<CreateRestaurant />} />
           <Route path="/admin/vehicles" element={<VehicleManagement />} />
           <Route path="/admin/vehicles/create" element={<CreateVehicle />} />
           <Route path="/admin/vehicles/:id" element={<VehicleDetail />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/users/create" element={<CreateUser />} />
           <Route path="/admin/users/:id" element={<UserDetail />} />
+          <Route path="/admin/policies" element={<PolicyManagement />} />
+          <Route path="/admin/policies/create" element={<CreatePolicy />} />
         </Route>
       </Routes>
     </BrowserRouter>
